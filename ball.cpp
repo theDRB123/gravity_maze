@@ -1,3 +1,4 @@
+#pragma once
 #include "include/raylib.h"
 #include "include/raymath.h"
 #include "shape.cpp"
@@ -22,29 +23,31 @@ struct Ball
         DrawCircleV(position, radius, RED);
     };
 
-    void checkCollision(vector<Shape> shapes){
+    void checkCollision(vector<Shape> shapes, float restitution){
         for (int i = 0; i < shapes.size(); i++)
         {
-            checkCollision(shapes[i]);
+            checkCollision(shapes[i], restitution);
         }
     }
-    void checkCollisionWall(){
+
+    void checkCollisionWall(float restitution){
         bool collided = false;
         if (position.x - radius < 0 || position.x + radius > GetScreenWidth())
         {
             collided = true;
-            velocity.x *= -1;
+            velocity.x *= -1 * restitution;
         }
         if (position.y - radius < 0 || position.y + radius > GetScreenHeight())
         {
             collided = true;
-            velocity.y *= -1;
+            velocity.y *= -1 * restitution;
         }
         if(collided){
             cout << "Collision" << endl;
         }
     }
-    void checkCollision(Shape shape)
+
+    void checkCollision(Shape shape, float restitution)
     {
         bool collided = false;
         for (int i = 0; i < shape.edges.size(); i++)
@@ -58,7 +61,7 @@ struct Ball
             if (withinEdge && distance < radius)
             {
                 collided = true;
-                velocity = Vector2Reflect(velocity, edge.normal);
+                velocity = Vector2Reflect(velocity, edge.normal) * restitution;
             }
         }
         if (collided)

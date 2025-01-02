@@ -3,43 +3,43 @@
 #include <vector>
 #include "shape.cpp"
 #include "ball.cpp"
+#include "world.cpp"
+
+// 10 pixels = 1 meter
+// g = 9.8 m/s^2
 
 int ballSim()
 {
-    InitWindow(800, 600, "Ball and Slanted Rectangle Collision");
-    SetTargetFPS(240);
+    InitWindow(800, 800, "Ball and Slanted Rectangle Collision");
+    SetTargetFPS(60);
 
-    Shape shape = Shape({{250, 250}, {350, 250}, {350, 350}, {250, 350}}, BLACK, 5);
+    vector<Shape> shapes = {
+        Shape({{0, 0},
+               {50, 100},
+               {100, 200},
+               {150, 300},
+               {200, 400},
+               {250, 500},
+               {300, 600},
+               {350, 700},
+               {400, 800},
+               {0, 800},
+               {0, 0}}),
+    };
 
-    Shape shape2 = Shape({{150, 150}, {300, 150}, {300, 300}, {150, 300}}, BLACK, 5);
+    Ball ball = Ball({300, 100}, {0, 0}, 10);
 
-    Shape shape3 = Shape({{400, 400}, {500, 400}, {500, 500}, {400, 500}}, BLACK, 5);
-
-    Shape shape4 = Shape({{100, 100}, {200, 100}, {200, 200}, {100, 200}}, BLACK, 5);
-
-//make triangles and wedges
-
-    Shape shape5 = Shape({{100, 100}, {200, 100}, {150, 200}}, BLACK, 5);
-    
-
-    vector<Shape> shapes = {shape, shape2, shape3, shape4};
-
-    Ball ball = Ball({300, 100}, {1, 1}, 10);
+    World world;
+    world.addBall(ball);
+    world.addShapes(shapes);
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        for (int i = 0; i < shapes.size(); i++)
-        {
-            shapes[i].draw();
-        }
-        ball.checkCollisionWall();
-        ball.checkCollision(shapes);
-
-        ball.update();
-        ball.draw();
+        world.update();
+        world.draw();
 
         EndDrawing();
     }
