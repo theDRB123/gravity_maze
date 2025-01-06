@@ -9,10 +9,11 @@ using namespace std;
 
 struct WorldParms
 {
-    Vector2 gravity = {0, 0.3};
-    float angle = 0;
-    float restitution = 0.8;
+    Vector2 gravity = {0, 0.1};
+    float rotValue = PI/360;
+    float restitution = 0.93;
     float friction = 0.5;
+    Vector2 pivot = {400, 400};
 };
 
 
@@ -50,7 +51,16 @@ class World{
             }
         }
 
+        void UpdateRotValue(){
+            for(int i = 0; i < shapes.size(); i++){
+                shapes[i].UpdateRotValuePivot(parms.rotValue, parms.pivot);
+            }
+        }
+
         void update(){
+            for(int i = 0; i < shapes.size(); i++){
+                shapes[i].Update();
+            }
             for (int i = 0; i < balls.size(); i++)
             {
                 balls[i].velocity = Vector2Add(balls[i].velocity, parms.gravity);

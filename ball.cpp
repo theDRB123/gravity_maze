@@ -17,11 +17,12 @@ struct Ball
     void update()
     {
         position = Vector2Add(position, velocity);
-    };
+    }
+
     void draw()
     {
         DrawCircleV(position, radius, RED);
-    };
+    }
 
     void checkCollision(vector<Shape> shapes, float restitution){
         for (int i = 0; i < shapes.size(); i++)
@@ -54,14 +55,20 @@ struct Ball
         {
             Edge edge = shape.edges[i];
             Vector2 diff = Vector2Subtract(position, edge.start);
+
             float distance = abs(Vector2DotProduct(diff, edge.normal));
-            // check if the ball is within the edge
             bool withinEdge = Vector2DotProduct(Vector2Normalize(position - edge.end), Vector2Normalize(position - edge.start)) < 0;
+            
+            Vector2 closestPoint = Vector2Add(edge.start, Vector2Normalize(Vector2Subtract(edge.end, edge.start)) * Vector2DotProduct(diff, Vector2Normalize(Vector2Subtract(edge.end, edge.start))));
+
+            Vector2 velocityPoint = edge.GetVelocityPoint(closestPoint);
+
 
             if (withinEdge && distance < radius)
             {
                 collided = true;
-                velocity = Vector2Reflect(velocity, edge.normal) * restitution;
+                // velocity = Vector2Reflect(velocity, edge.normal) * restitution;
+                velocity = Vector2Add(Vector2Reflect(Vector2Subtract(velocity, velocityPoint), edge.normal), velocityPoint) * restitution;
             }
         }
         if (collided)
