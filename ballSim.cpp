@@ -29,44 +29,43 @@ int ballSim()
 
     vector<Shape> shapes = {
         Shape({{50, 50}, {750, 50}, {750, 750}, {50, 750}}),
-        Shape({{380, 100}, {420, 100}, {420, 700}, {380, 700}})
-    };
-
-
+        Shape({{380, 100}, {420, 100}, {420, 700}, {380, 700}})};
 
     World world;
 
-    
-    Ball ball = Ball({300, 300}, {0, 0}, 20);
-    // Ball ball2 = Ball({400, 300}, {0, 0}, 20);
-    // Ball ball3 = Ball({500, 300}, {0, 0}, 20);
-    // Ball ball4 = Ball({600, 300}, {0, 0}, 20);
-    // Ball ball5 = Ball({700, 300}, {0, 0}, 20);
-    // Ball ball6 = Ball({800, 300}, {0, 0}, 20);
-    // Ball ball7 = Ball({900, 300}, {0, 0}, 20);
-    // Ball ball8 = Ball({1000, 300}, {0, 0}, 20);
-
-
-
+    Ball ball = Ball({300, 300}, {0, 0}, 5);
+    Ball ball2 = Ball({301, 300}, {0, 0}, 5, GREEN);
+    Ball ball3 = Ball({302, 300}, {0, 0}, 5, BLUE);
+    Ball ball4 = Ball({303, 300}, {0, 0}, 5, YELLOW);
+    Ball ball5 = Ball({304, 300}, {0, 0}, 5, ORANGE);
+    Ball ball6 = Ball({305, 300}, {0, 0}, 5, PURPLE);
+    Ball ball7 = Ball({306, 300}, {0, 0}, 5, PINK);
+    Ball ball8 = Ball({307, 300}, {0, 0}, 5, BROWN);
 
     world.addBall(ball);
-    // world.addBall(ball2);
-    // world.addBall(ball3);
-    // world.addBall(ball4);
-    // world.addBall(ball5);
-    // world.addBall(ball6);
-    // world.addBall(ball7);
-    // world.addBall(ball8);
-    
+    world.addBall(ball2);
+    world.addBall(ball3);
+    world.addBall(ball4);
+    world.addBall(ball5);
+    world.addBall(ball6);
+    world.addBall(ball7);
+    world.addBall(ball8);
 
     world.addShapes(shapes);
 
     world.UpdateRotValue();
 
+    int counter = 0;
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+
+        if (counter < 1000)
+        {
+            ClearBackground(BLACK);
+        }
+        counter++;
 
         world.update();
         world.draw();

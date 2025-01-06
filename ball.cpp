@@ -12,8 +12,10 @@ struct Ball
 {
     Vector2 position;
     Vector2 velocity;
+    Color color = RED;
     float radius;
     Ball(Vector2 position, Vector2 velocity, float radius) : position(position), velocity(velocity), radius(radius) {};
+    Ball(Vector2 position, Vector2 velocity, float radius, Color color) : position(position), velocity(velocity), radius(radius), color(color) {};
     void update()
     {
         position = Vector2Add(position, velocity);
@@ -21,7 +23,7 @@ struct Ball
 
     void draw()
     {
-        DrawCircleV(position, radius, RED);
+        DrawCircleV(position, radius, color);
     }
 
     void checkCollision(vector<Shape> shapes, float restitution){
@@ -54,10 +56,11 @@ struct Ball
         for (int i = 0; i < shape.edges.size(); i++)
         {
             Edge edge = shape.edges[i];
-            Vector2 diff = Vector2Subtract(position, edge.start);
+            Vector2 next_pos = Vector2Add(position, velocity);
+            Vector2 diff = Vector2Subtract(next_pos, edge.start);
 
             float distance = abs(Vector2DotProduct(diff, edge.normal));
-            bool withinEdge = Vector2DotProduct(Vector2Normalize(position - edge.end), Vector2Normalize(position - edge.start)) < 0;
+            bool withinEdge = Vector2DotProduct(Vector2Normalize(next_pos - edge.end), Vector2Normalize(next_pos- edge.start)) < 0;
             
             Vector2 closestPoint = Vector2Add(edge.start, Vector2Normalize(Vector2Subtract(edge.end, edge.start)) * Vector2DotProduct(diff, Vector2Normalize(Vector2Subtract(edge.end, edge.start))));
 

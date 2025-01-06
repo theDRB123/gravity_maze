@@ -55,7 +55,7 @@ struct Edge
     };
     void Draw()
     {
-        DrawLineEx(start, end, 5, BLACK);
+        DrawLineEx(start, end, 5, RAYWHITE);
     };
     Vector2 GetVelocityPoint(Vector2 point)
     {
@@ -86,7 +86,7 @@ public:
 
     vector<Vector2> vertices;
     vector<Edge> edges;
-    Color color = BLACK;
+    Color color = RAYWHITE;
     float thickness = 10.0f;
 
     void createEdges()
