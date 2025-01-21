@@ -1,31 +1,35 @@
 #include "include/raylib.h"
 #include <cmath>
 #include <vector>
+#include <map>
 #include "shape.cpp"
 #include "ball.cpp"
 #include "world.cpp"
-
+#include "control.cpp"
 // 10 pixels = 1 meter
 // g = 9.8 m/s^2
+
+map<int, Color> colors = {
+    {0, RED},
+    {1, GREEN},
+    {2, BLUE},
+    {3, YELLOW},
+    {4, ORANGE},
+    {5, PURPLE},
+    {6, PINK},
+    {7, BROWN},
+    {8, MAROON},
+    {9, DARKBLUE},
+    {10, DARKGREEN},
+    {11, DARKPURPLE},
+    {12, DARKGRAY},
+    {13, DARKBROWN},
+};
 
 int ballSim()
 {
     InitWindow(800, 800, "Ball and Slanted Rectangle Collision");
     SetTargetFPS(120);
-
-    // vector<Shape> shapes = {
-    //     Shape({{0, 0},
-    //            {50, 100},
-    //            {100, 200},
-    //            {150, 300},
-    //            {200, 400},
-    //            {250, 500},
-    //            {300, 600},
-    //            {350, 700},
-    //            {400, 800},
-    //            {0, 800},
-    //            {0, 0}}),
-    // };
 
     vector<Shape> shapes = {
         Shape({{50, 50}, {750, 50}, {750, 750}, {50, 750}}),
@@ -33,38 +37,33 @@ int ballSim()
 
     World world;
 
-    Ball ball = Ball({300, 300}, {0, 0}, 5);
-    Ball ball2 = Ball({301, 300}, {0, 0}, 5, GREEN);
-    Ball ball3 = Ball({302, 300}, {0, 0}, 5, BLUE);
-    Ball ball4 = Ball({303, 300}, {0, 0}, 5, YELLOW);
-    Ball ball5 = Ball({304, 300}, {0, 0}, 5, ORANGE);
-    Ball ball6 = Ball({305, 300}, {0, 0}, 5, PURPLE);
-    Ball ball7 = Ball({306, 300}, {0, 0}, 5, PINK);
-    Ball ball8 = Ball({307, 300}, {0, 0}, 5, BROWN);
 
-    world.addBall(ball);
-    world.addBall(ball2);
-    world.addBall(ball3);
-    world.addBall(ball4);
-    world.addBall(ball5);
-    world.addBall(ball6);
-    world.addBall(ball7);
-    world.addBall(ball8);
+    for (int i = 0; i < 10; i++)
+    {
+        Ball ball = Ball({300.0f + i, 300}, {0, 0}, 20, colors[i % 13]);
+        world.addBall(ball);
+    }
 
     world.addShapes(shapes);
-
     world.UpdateRotValue();
 
     int counter = 0;
 
+    bool controlFlag = false;
+    Vector2 pos = {0, 0};
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
+        ClearBackground(BLACK);
 
-        if (counter < 1000)
-        {
-            ClearBackground(BLACK);
-        }
+        control(world, controlFlag, pos);
+
+        // if (counter % 1000 == 0)
+        // {
+        //     world.parms.rotValue = -world.parms.rotValue;
+        //     world.UpdateRotValue();
+        // }
         counter++;
 
         world.update();

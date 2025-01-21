@@ -45,9 +45,6 @@ struct Ball
             collided = true;
             velocity.y *= -1 * restitution;
         }
-        if(collided){
-            cout << "Collision" << endl;
-        }
     }
 
     void checkCollision(Shape shape, float restitution)
@@ -71,12 +68,8 @@ struct Ball
             {
                 collided = true;
                 // velocity = Vector2Reflect(velocity, edge.normal) * restitution;
-                velocity = Vector2Add(Vector2Reflect(Vector2Subtract(velocity, velocityPoint), edge.normal), velocityPoint) * restitution;
+                velocity = Vector2Add(Vector2Reflect(Vector2Subtract(velocity * restitution, velocityPoint), edge.normal), velocityPoint);
             }
-        }
-        if (collided)
-        {
-            cout << "Collided" << endl;
         }
     };
 };
