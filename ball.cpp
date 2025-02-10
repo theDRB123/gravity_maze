@@ -20,7 +20,9 @@ struct Ball
     {
         position = Vector2Add(position, velocity);
     }
-
+    void drawVelocity(){
+        DrawLineEx(position, Vector2Add(position, velocity * 20), 5, RED);
+    }
     void draw()
     {
         DrawCircleV(position, radius, color);
@@ -67,8 +69,15 @@ struct Ball
             if (withinEdge && distance < radius)
             {
                 collided = true;
+                // find the collision direction
+                Vector2 collisionDirection = Vector2Normalize(edge.normal * Vector2DotProduct(velocity, edge.normal));
                 // velocity = Vector2Reflect(velocity, edge.normal) * restitution;
                 velocity = Vector2Add(Vector2Reflect(Vector2Subtract(velocity * restitution, velocityPoint), edge.normal), velocityPoint);
+
+                // eliminate all the components of velocity perpendicular to the edge and in direction opposite to normal
+                if(Vector2DotProduct(velocity, collisionDirection) > 0){
+                    velocity = Vector2Subtract(velocity, collisionDirection * Vector2DotProduct(velocity, collisionDirection));
+                }
             }
         }
     };
