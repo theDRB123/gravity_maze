@@ -6,6 +6,7 @@
 #include "ball.cpp"
 #include "world.cpp"
 #include "control.cpp"
+#include "collision.cpp"
 // 10 pixels = 1 meter
 // g = 9.8 m/s^2
 
@@ -52,20 +53,19 @@ int ballSim()
     bool controlFlag = false;
     Vector2 pos = {0, 0};
 
+    Control control = Control(world);
+    Collision collisionController = Collision(world);
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(BLACK);
 
-        control(world, controlFlag, pos);
+        control.control(controlFlag, pos);
 
-        // if (counter % 1000 == 0)
-        // {
-        //     world.parms.rotValue = -world.parms.rotValue;
-        //     world.UpdateRotValue();
-        // }
         counter++;
-
+        world.applyGravity();
+        collisionController.collision();
         world.update();
         world.draw();
 

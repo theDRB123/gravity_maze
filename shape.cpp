@@ -103,7 +103,7 @@ public:
         {
             edges[i].Draw();
             // edges[i].DrawNormal();
-            // edges[i].DrawVelocities();
+            edges[i].DrawVelocities();
         }
     };
 
