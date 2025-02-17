@@ -91,9 +91,9 @@ public:
 
     void createEdges()
     {
-        for (int i = 0; i < vertices.size(); i++)
+        for (int i = 0; i < vertices.size() - 1; i++)
         {
-            edges.emplace_back(vertices[i], vertices[(i + 1) % vertices.size()]);
+            edges.emplace_back(vertices[i], vertices[i + 1]);
         }
     }
 
@@ -103,7 +103,7 @@ public:
         {
             edges[i].Draw();
             // edges[i].DrawNormal();
-            edges[i].DrawVelocities();
+            // edges[i].DrawVelocities();
         }
     };
 
@@ -115,7 +115,7 @@ public:
         }
     };
 
-    void Update()
+    void update()
     {
         for (int i = 0; i < edges.size(); i++)
         {

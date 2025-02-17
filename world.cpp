@@ -12,9 +12,9 @@ struct WorldParms
 {
     Vector2 gravity = {0, 0.1};
     float rotValue = 0;
-    float restitution = 0.8;
+    float restitution = 0.5;
     float friction = 0.5;
-    Vector2 pivot = {400, 400};
+    Vector2 pivot = {500, 500};
 };
 
 class World
@@ -61,28 +61,6 @@ public:
         for (int i = 0; i < shapes.size(); i++)
         {
             shapes[i].UpdateRotValuePivot(parms.rotValue, parms.pivot);
-        }
-    }
-
-    void update()
-    {
-
-        for (int i = 0; i < shapes.size(); i++)
-        {
-            shapes[i].Update();
-        }
-
-        for (int i = 0; i < balls.size(); i++)
-        {
-            balls[i].update();
-        }
-    }
-
-    void applyGravity()
-    {
-        for (int i = 0; i < balls.size(); i++)
-        {
-            balls[i].velocity = Vector2Add(balls[i].velocity, parms.gravity);
         }
     }
 };

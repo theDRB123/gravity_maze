@@ -6,7 +6,7 @@
 #include "ball.cpp"
 #include "world.cpp"
 #include "control.cpp"
-#include "collision.cpp"
+#include "physics.cpp"
 // 10 pixels = 1 meter
 // g = 9.8 m/s^2
 
@@ -29,19 +29,19 @@ map<int, Color> colors = {
 
 int ballSim()
 {
-    InitWindow(800, 800, "Ball and Slanted Rectangle Collision");
+    InitWindow(1000, 1000, "Ball and Slanted Rectangle Collision");
     SetTargetFPS(120);
 
     vector<Shape> shapes = {
-        Shape({{50, 50}, {750, 50}, {750, 750}, {50, 750}}),
-        Shape({{380, 100}, {420, 100}, {420, 700}, {380, 700}})};
+        Shape({{150, 150}, {850, 150}, {850, 850}, {150, 850}, {150, 150}}),
+        Shape({{350, 600}, {350, 225}, {750, 225}, {750, 400}})};
 
     World world;
 
 
     for (int i = 0; i < 10; i++)
     {
-        Ball ball = Ball({300.0f + i, 300}, {0, 0}, 20, colors[i % 13]);
+        Ball ball = Ball({300.0f + i, 300}, {0, 0}, 40, colors[i % 13]);
         world.addBall(ball);
     }
 
@@ -54,7 +54,7 @@ int ballSim()
     Vector2 pos = {0, 0};
 
     Control control = Control(world);
-    Collision collisionController = Collision(world);
+    Physics physics = Physics(world);
 
     while (!WindowShouldClose())
     {
@@ -64,9 +64,9 @@ int ballSim()
         control.control(controlFlag, pos);
 
         counter++;
-        world.applyGravity();
-        collisionController.collision();
-        world.update();
+        physics.applyGravity();
+        physics.collision();
+        physics.update();
         world.draw();
 
         EndDrawing();
